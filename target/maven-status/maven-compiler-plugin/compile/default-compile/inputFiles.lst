@@ -1,0 +1,10 @@
+/mnt/c/Users/srsca/shadow-db/shadow-db/src/main/java/com/shadowdb/DiffCommand.java
+/mnt/c/Users/srsca/shadow-db/shadow-db/src/main/java/com/shadowdb/MigrationFileReader.java
+/mnt/c/Users/srsca/shadow-db/shadow-db/src/main/java/com/shadowdb/ReportPrinter.java
+/mnt/c/Users/srsca/shadow-db/shadow-db/src/main/java/com/shadowdb/SchemaDiffer.java
+/mnt/c/Users/srsca/shadow-db/shadow-db/src/main/java/com/shadowdb/ShadowDatabaseManager.java
+/mnt/c/Users/srsca/shadow-db/shadow-db/src/main/java/com/shadowdb/ShadowDbCli.java
+/mnt/c/Users/srsca/shadow-db/shadow-db/src/main/java/com/shadowdb/model/ColumnDiff.java
+/mnt/c/Users/srsca/shadow-db/shadow-db/src/main/java/com/shadowdb/model/DiffType.java
+/mnt/c/Users/srsca/shadow-db/shadow-db/src/main/java/com/shadowdb/model/IndexDiff.java
+/mnt/c/Users/srsca/shadow-db/shadow-db/src/main/java/com/shadowdb/model/SchemaDiff.java
