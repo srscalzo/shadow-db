@@ -2,14 +2,14 @@
 
 Preview Flyway database migration changes before they are applied.
 
-`shadowdb diff` spins up two temporary MySQL containers, applies your existing migrations to one and your new migration to both, then diffs the schemas — showing exactly what tables, columns, and indexes will change.
+`shadowdb diff` connects to your existing MySQL instance, creates two temporary shadow databases, applies your migrations to each, and diffs the schemas — showing exactly what tables, columns, and indexes will change.
 
 ---
 
 ## Requirements
 
 - Java 17+
-- Docker Desktop (running in the background)
+- A running MySQL instance (local, Docker, or remote)
 
 ---
 
@@ -39,7 +39,7 @@ Preview Flyway database migration changes before they are applied.
 Navigate to your Flyway project root and run:
 
 ```bash
-shadowdb diff
+shadowdb diff --db-url jdbc:mysql://localhost:3306 --db-user root --db-password secret
 ```
 
 shadowdb assumes the standard Flyway migrations layout:
@@ -51,14 +51,31 @@ your-project/
     └── V3__add_users.sql   ← treated as the new migration (highest version)
 ```
 
+### Options
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `--db-url` | `jdbc:mysql://localhost:3306` | JDBC base URL (no database name) |
+| `--db-user` | `root` | Database username |
+| `--db-password` | _(empty)_ | Database password |
+
+Options can also be set via environment variables:
+
+```bash
+export SHADOWDB_DB_URL=jdbc:mysql://localhost:3306
+export SHADOWDB_DB_USER=root
+export SHADOWDB_DB_PASSWORD=secret
+shadowdb diff
+```
+
 **Example output:**
 
 ```
 Detected new migration: V3__add_users.sql
 Existing migrations:    2
 
-Starting Docker MySQL container...
-Container ready.
+Connecting to jdbc:mysql://localhost:3306 ...
+Connected.
 
 Shadow DB Migration Preview
 ============================
@@ -90,7 +107,7 @@ No indexes removed.
 |------|---------|
 | `0`  | No schema changes detected |
 | `1`  | Schema changes detected |
-| `2`  | Error (Docker not running, migrations folder not found, etc.) |
+| `2`  | Error (connection failed, migrations folder not found, etc.) |
 
 Useful in CI pipelines:
 ```bash
@@ -112,4 +129,4 @@ Shadow DB 2  ──  existing + new migration         (proposed schema)
                      print the report
 ```
 
-Both databases are ephemeral — created fresh in Docker and torn down automatically when the diff completes.
+Both shadow databases are created fresh on your MySQL instance and dropped automatically when the diff completes. The MySQL user must have `CREATE DATABASE` and `DROP DATABASE` privileges.
