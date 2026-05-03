@@ -55,14 +55,6 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- Pin Jackson annotations to a version that has @JsonKey (added in 2.14).
-         Testcontainers pulls an older version transitively that conflicts with Flyway 10. -->
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-annotations</artifactId>
-      <version>2.17.0</version>
-    </dependency>
-
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>

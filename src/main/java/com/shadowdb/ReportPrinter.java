@@ -9,7 +9,7 @@ import java.util.List;
 
 public class ReportPrinter {
 
-    private static final Ansi ANSI = Ansi.AUTO;
+    private static final Ansi ANSI = Ansi.ON;
 
     public int printReport(SchemaDiff diff) {
         printHeader(diff);

@@ -47,8 +47,9 @@ shadowdb assumes the standard Flyway migrations layout:
 your-project/
 └── src/main/resources/db/migration/
     ├── V1__create_products.sql
-    ├── V2__add_orders.sql
-    └── V3__add_users.sql   ← treated as the new migration (highest version)
+    ├── V2__create_customers.sql
+    ├── V3__create_orders.sql
+    └── V4__add_reviews.sql   ← treated as the new migration (highest version)
 ```
 
 ### Options
@@ -68,36 +69,44 @@ export SHADOWDB_DB_PASSWORD=secret
 shadowdb diff
 ```
 
+> **Note:** Flyway migration progress logs (`INFO: Migrating schema...`) are printed during the run. These are informational — the diff report always appears at the end.
+
 **Example output:**
 
 ```
-Detected new migration: V3__add_users.sql
-Existing migrations:    2
+Detected new migration: V4__add_reviews.sql
+Existing migrations:    3
 
 Connecting to jdbc:mysql://localhost:3306 ...
 Connected.
 
 Shadow DB Migration Preview
 ============================
-New migration: V3__add_users.sql
+New migration: V4__add_reviews.sql
 
 TABLES
-  + users
+  + reviews  (added)
 
-COLUMNS in 'users'
-  + id            INT NOT NULL
-  + username      VARCHAR(100) NOT NULL
-  + email         VARCHAR(255) NOT NULL
-  + created_at    DATETIME NOT NULL
+COLUMNS in 'reviews'
+  + id                   INT NOT NULL
+  + product_id           INT NOT NULL
+  + customer_id          INT NOT NULL
+  + rating               TINYINT NOT NULL
+  + title                VARCHAR(255)
+  + body                 TEXT(65535)
+  + created_at           DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 
-INDEXES in 'users'
-  + PRIMARY (id)
-  + uk_users_email (email) UNIQUE
+INDEXES in 'reviews'
+  + idx_reviews_customer (customer_id)
+  + idx_reviews_product (product_id)
+  + PRIMARY (id) UNIQUE
 
-No tables removed.
-No columns removed or modified.
-No indexes removed.
+No column changes.
+
+No index changes.
 ```
+
+Additions are highlighted in green, removals in red, and modifications in yellow in a terminal that supports color.
 
 ---
 
